@@ -1,0 +1,227 @@
+{
+    "TrajectoryDesign": {
+        "name": "Automated Hypothesis Validation with Agentic Sequential Falsifications",
+        "predecessor_work": [
+            "LLMs have been used for hypothesis generation, focusing on domain-specific ideas and comparisons between AI-generated and expert proposals.", 
+            "Some studies refine hypotheses or ground them in datasets, but few systematically test free-form hypotheses under rigorous statistical controls.", 
+            "Certain works evaluate LLM-driven experimental protocols or integrate hypothesis and code generation, but they often lack strong error control."
+        ], 
+        "objective": "To rigorously validate free-form hypotheses at scale using LLM agents while maintaining statistical rigor (Type-I error control) and improving power (ability to detect true effects).", 
+        "motivation": "The increasing generation of hypotheses by Large Language Models (LLMs), which are prone to hallucination, necessitates a reliable and scalable method for hypothesis validation. Many real-world hypotheses are abstract and difficult to evaluate directly, requiring translation into specific, measurable implications.", 
+        "Experiment Design Agent": [
+            {
+                "Receives main hypothesis, previous sub-hypotheses, their p-values, and database metadata": "The agent takes these inputs to design a new falsification experiment.", 
+                "Generates concise rationale, null hypothesis, and alternative hypothesis": "The agent proposes a falsification test with clear null and alternative hypotheses.", 
+                "Self-Refinement": "The agent iteratively improves its proposal based on novelty, implementability, and logical relevance."
+            }
+        ], 
+        "Relevance Checker": [
+            {
+                "Estimates how strongly the proposed null sub-hypothesis is implied by the main hypothesis": "An LLM-based function assigns a relevance score to the proposed experiment.", 
+                "Prunes irrelevant experiments": "If the relevance score is below a threshold, the experiment is discarded, and the design agent proposes a new one."
+            }
+        ], 
+        "Experiment Execution Agent": [
+            {
+                "Receives a proposed experiment": "The agent takes the designed experiment as input.", 
+                "Queries and analyzes raw data": "The agent queries the available datasets to output a p-value.", 
+                "Uses a coding environment": "The agent can write and run Python scripts using libraries like pandas, statsmodels, and scipy.", 
+                "Implements ReAct": "The agent incrementally executes the experiment via a cycle of actions, observations, and reasoning."
+            }
+        ], 
+        "Sequential Aggregation of Statistics": [
+            {
+                "Converts p-value to e-value": "The p-value from the experiment is converted into an e-value.", 
+                "Aggregates evidence using e-values": "E-values are combined to measure evidence for the main hypothesis while maintaining Type-I error control.", 
+                "Rejects or continues based on aggregated evidence": "If the aggregated evidence surpasses a predefined threshold, the null hypothesis is rejected. Otherwise, the process continues with the next falsification test."
+            }                            
+        ]                           
+    }
+} 
+{
+    "TrajectoryDesign": {
+        "name": "Towards an AI co-scientist",
+        "predecessor_work": [
+            "Emmanuelle Charpentier and Jennifer Doudna's synergy of microbiology, genetics, and molecular biology led to the CRISPR breakthrough, illustrating the power of cross-disciplinary research.",
+            "Geoffrey Hinton and John Hopfield combined ideas from physics and neuroscience to enhance AI systems, awarded the 2024 Nobel Prize in Physics for their contributions."
+        ],
+        "objective": "The AI co-scientist aims to augment scientific discovery by generating novel hypotheses and research proposals, focusing on areas like drug repurposing, novel target discovery, and explaining mechanisms of bacterial evolution.",
+        "motivation": "The complexity of modern scientific research, especially in biomedicine, necessitates both deep subject matter expertise and broad interdisciplinary insights. The rapid increase in scientific data and publications presents a challenge in mastering both domain-specific and trans-disciplinary knowledge, motivating the development of AI systems to assist in hypothesis generation and scientific exploration.",
+        "GenerationPhase": [
+            {
+                "LiteratureSearch": "The system searches for relevant literature, synthesizes findings, and proposes initial hypotheses."
+            },
+            {
+                "ScientificDebates": "Simulated debates among agents refine hypotheses through iterative discussion."
+            },
+            {
+                "AssumptionIdentification": "Identifies and tests intermediate assumptions that could lead to novel discoveries."
+            }
+        ],
+        "EvaluationPhase": [
+            {
+                "InitialReview": "Quick assessment of hypotheses for novelty, correctness, and potential safety issues."
+            },
+            {
+                "FullReview": "Detailed evaluation using external tools and literature to confirm hypothesis quality."
+            },
+            {
+                "DeepVerification": "Breaks down hypotheses into assumptions and evaluates each for validity."
+            }
+        ],
+        "ImprovementPhase": [
+            {
+                "RankingAndProximity": "Hypotheses are ranked through tournaments and organized by similarity for efficient exploration."
+            },
+            {
+                "Evolution": "Hypotheses are refined through synthesis, analogy, and simplification, improving quality over iterations."
+            },
+            {
+                "MetaReview": "Synthesizes insights from reviews to guide future hypothesis generation and refinement."
+            }
+        ]
+    }
+}  
+{
+    "name": "EvoFlow: Evolving Diverse Agentic Workflows On The Fly",
+    "predecessor_work": [
+        "Early multi-agent systems like CAMEL, AutoGen, and MetaGPT relied heavily on manual configurations, limiting their adaptability.",
+        "Recent advancements such as DsPy and GPTSwarm have automated aspects like prompt optimization and inter-agent communication, but remain homogeneous and lack diversity in LLM agents."
+    ],
+    "objective": "To develop EvoFlow, a framework using a niching evolutionary algorithm to automatically optimize a diverse set of heterogeneous and complexity-adaptive agentic workflows, enhancing performance while reducing cost.",
+    "motivation": "Existing agentic workflow automation lacks diversity in LLM heterogeneity and complexity scheduling. EvoFlow aims to address these gaps, inspired by the potential of combining diverse LLMs for more effective solutions and the need to tailor workflows to varying query complexities.",
+    "population_initialization": [
+        {
+            "select_and_combine_operator_nodes": "Initialize the population by selecting powerful single-/multi-agent structures like CoT, Ensemble, and Multi-agent Debate."
+        },
+        {
+            "assign_tags": "Assign utility indicator tags to suggest the task domains where each workflow might excel, aiding in rapid matching with user queries."
+        }
+    ],
+    "workflow_evolution": [
+        {
+            "tag-based_retrieval": "Retrieve the most relevant workflows using utility indicator tags in response to new queries."
+        },
+        {
+            "crossover_and_mutation": "Generate offspring workflows through crossover of selected parents and apply mutations such as LLM mutation, prompt mutation, and operator mutation to enhance diversity."
+        }
+    ],
+    "niching_based_selection": [
+        {
+            "identify_niching_area": "Determine clusters of similar individuals for environmental selection based on cost and utility tags."
+        },
+        {
+            "fitness_evaluation": "Calculate fitness values for workflows in the niching area and eliminate the worst-performing workflow to maintain diversity and efficiency."
+        }
+    ]
+}
+{
+    "name": "Flow: Modularized Agentic Workflow Automation",
+    "predecessor_work": [
+        "MetaGPT [8] utilizes a predefined set of roles in a sequential workflow for programming tasks, leveraging Standardized Operating Procedures.",
+        "CAMEL [10] requires user-defined agents for task execution in a sequential manner, focusing on task-specific responsibilities.",
+        "AutoGen [26] automates agent creation for various tasks, executing subtasks sequentially as per a generated list."
+    ],
+    "objective": "The objective of the method proposed in the paper is to improve the efficiency and adaptability of multi-agent frameworks by enabling dynamic updates of workflows during task execution and promoting modularity for concurrent task execution.",
+    "motivation": "The motivation behind the method is to address the lack of adaptability in existing multi-agent frameworks, which often rely on static workflows that perform poorly in dynamic environments. The paper seeks to enhance efficiency and robustness by allowing real-time adjustments to workflows based on ongoing performance feedback and changing task conditions."
+
+    ,
+    "workflow_initialization":[
+        {
+            "define_task_requirements": "Identify the main objectives and subtasks required for the task.",
+            "generate_initial_aov_graph": "Create multiple candidate AOV graphs representing potential workflows, assessing them for parallelism and dependency complexity.",
+            "select_optimal_workflow": "Choose the AOV graph with the highest parallelism and lowest complexity for initial execution."
+        }
+    ],
+    "execution_and_monitoring":[
+        {
+            "execute_subtasks_in_parallel": "Run subtasks concurrently based on the chosen workflow, adhering to dependency constraints.",
+            "monitor_task_progress": "Continuously track the status of each subtask and overall task progression.",
+            "check_for_updates": "Evaluate if workflow updates are needed based on real-time performance data."
+        }
+    ],
+    "workflow_refinement":[
+        {
+            "generate_update_candidates": "Use LLM to create updated workflow candidates when changes are necessary.",
+            "evaluate_updated_workflows": "Assess updated workflows for parallelism and dependency complexity, selecting the most efficient one.",
+            "apply_selected_update": "Implement the selected workflow update, ensuring minimal disruption to ongoing tasks."
+        }
+    ],
+    "completion_and_review":[
+        {
+            "finalize_task_execution": "Ensure all subtasks are completed and objectives are met.",
+            "review_workflow_performance": "Analyze the efficiency and effectiveness of the workflow post-completion.",
+            "identify_improvement_areas": "Highlight potential areas for future workflow enhancements."
+        }
+    ]
+}
+{
+    "TrajectoryDesign": {
+        "name": "Multi-Agent Design: Optimizing Agents with Better Prompts and Topologies",
+        "predecessor_work": [
+            "DSPy automates the process of designing exemplars for improved prompt programming.",
+            "Li et al. (2024a) proposes to optimize MAS by scaling up the number of agents in majority voting.",
+            "ADAS programs new topologies expressed in code via an LLM-based meta-agent.",
+            "AFlow searches better topologies using Monte Carlo Tree Search within a set of predefined operators."
+        ],
+        "objective": "The goal of the method proposed in the paper is to optimize multi-agent systems by automating the design of prompts and topologies, aiming to improve the overall performance and efficiency of these systems.",
+        "motivation": "The motivation for the proposed method arises from the complexity and manual effort required in designing effective multi-agent systems, particularly in optimizing prompts and topologies. The research is inspired by the potential for leveraging automation to improve system performance across diverse tasks.",
+        "Block-Level Optimization": [
+            {
+                "Prompt Warm-Up": "Conduct block-level prompt optimization for each agentic module individually, ensuring they are primed for their roles with effective instructions."
+            }
+        ],
+        "Workflow Topology Optimization": [
+            {
+                "Pruned Search": "Conditioned on the best prompts from the block-level optimization, conduct workflow topology optimization in a pruned set of topology space, sampling valid configurations."
+            }
+        ],
+        "Workflow-Level Prompt Optimization": [
+            {
+                "Global Optimization": "Conduct workflow-level prompt optimization on the best-found topology, adapting prompts for orchestration within the multi-agent system."
+            }
+        ]
+    }
+}
+{
+    "name": "Automated Hypothesis Validation with Agentic Sequential Falsifications",
+    "predecessor_work": "LLMs have been widely explored for hypothesis generation, with works focusing on domain-specific ideas and comparisons between AI-generated and expert proposals. Some studies refine hypotheses or ground them in datasets, yet few systematically test free-form hypotheses under rigorous statistical controls. POPPER conducts robust statistical validation of both LLM- and human-generated hypotheses through a sequential falsification framework, ensuring reliability. Unlike other works, POPPER uniquely targets free-form natural language hypotheses and offers rigorous error control.",
+    "objective": "The goal of the method proposed in the paper is to provide a scalable and rigorous solution for automated validation of free-form hypotheses. It aims to reduce the time and effort required for hypothesis validation by using LLM agents to design and execute falsification experiments, while ensuring robust error control and high power.",
+    "motivation": "The motivation for the method proposed in the paper is the increasing volume of hypotheses generated by Large Language Models (LLMs), which makes manual validation impractical. Many real-world hypotheses are abstract and difficult to evaluate directly, highlighting the need for frameworks that can automate this evaluation process. The framework must also be statistically rigorous to avoid false verifications of hypotheses.",
+    "workflow": "POPPER employs an agentic framework where two specialized LLM agents collaborate to validate hypotheses. The Experiment Design Agent identifies measurable implications of a hypothesis and designs falsification experiments. The Experiment Execution Agent carries out these experiments to produce p-values summarizing the outcomes. A sequential testing framework aggregates evidence from multiple experiments, converting p-values into e-values to adaptively combine evidence while controlling the Type-I error rate. This process iterates until sufficient evidence is gathered, a hypothesis is rejected, or the validation process is terminated. Each experiment may involve data collection, simulations, or analysis of existing datasets.",
+    "experimental_design": "The experimental design involves implementing POPPER across six domains, including biology, sociology, and economics. POPPER designs falsification experiments using large-scale datasets and executes them in a Python code environment. The process includes data preprocessing, analysis, and statistical evaluation to generate sequentially valid p-values. The performance of POPPER is evaluated in terms of Type-I error control and power improvements, with comparisons to baselines and variations. An expert user study is conducted, demonstrating that POPPER matches human performance in hypothesis validation tasks while significantly reducing validation time."
+}
+
+{
+    "name": "Multi-Agent Design: Optimizing Agents with Better Prompts and Topologies",
+    "predecessor_work": "Forms of LLM-based agentic systems. The simplest form of an LLM-based agentic system involves a single agent that can dynamically interact and respond to the environment (Yao et al., 2023). Recent advances endow agents with diverse roles and tools (Wu et al., 2023), orchestrating multiple agents to cooperate with each other (Chen et al., 2024b). Standard forms of agent cooperation (i.e., topology) often involve parallel and serial flows of information. The parallel form usually diversifies the exploration among many agents in parallel (Li et al., 2024a), and self-consistency (SC) (Wang et al., 2023) is a representative way for scaling agents in parallel. The serial form aims to advance the exploitation of a task via a chain of agents, where LLMs can serve as reflective agents to self-justify and refine former predictions (Madaan et al., 2024; Shinn et al., 2024). Later, the opinions from multiple agents can be summarized to retrieve the most consistent answer by an aggregation agent (Chen et al., 2024c; Lin et al., 2024). Moreover, multi-agent debate consists of a more complex flow of information (Chen et al., 2024a; Wang et al., 2024c; Zhang et al., 2024c), and recent research shows that debating can elicit more truthful predictions (Du et al., 2024; Khan et al., 2024). Recent agent topology extends beyond the above connections (Qian et al., 2024; Wang et al., 2024b), and Mass can automatically search the best topology among the aforementioned spaces.",
+    "objective": "The goal of the method proposed in the paper is to improve the design of multi-agent systems (MAS) by optimizing both prompts and topologies to achieve state-of-the-art performance across various tasks.",
+    "motivation": "The motivation for the proposed method is the inherent complexity in designing effective multi-agent systems, which involves both prompt sensitivity and the complexity of topology design in a vast combinatorial space. The paper aims to automate the optimization process to build efficient MAS by interleaving prompt and topology optimization.",
+    "workflow": "The workflow of the proposed method consists of three main stages: 1) Block-level prompt optimization: This stage involves optimizing the prompts for individual agents to ensure that they perform their intended roles effectively. Each agent's prompt is optimized using a modular prompt optimizer, focusing on instructions and few-shot demonstrations. 2) Workflow topology optimization: In this stage, the overall MAS structure is optimized by searching for the most effective arrangements and connections between agents. The design space is pruned to focus on influential topologies, and incremental influence is measured to determine the effectiveness of each topology configuration. 3) Workflow-level prompt optimization: The final stage treats the entire MAS design as an integrated entity and performs an additional round of prompt optimization, conditioning on the best topology found in the previous stage. This stage ensures that prompts are fine-tuned for orchestration within the MAS and optimizes inter-agent dependencies.",
+    "experimental_design": "The experimental design involves using benchmarks such as Hendryck’s MATH, DROP, HotpotQA, MuSiQue, 2WikiMultiHopQA, MBPP, HumanEval, and LiveCodeBench. Experiments are conducted on two Gemini 1.5 model sizes and Claude 3.5 Sonnet, with a maximum of 10 agents. The Mass framework integrates MIPRO for prompt optimization, limits the number of bootstrapped demonstrations to 3, and uses rejection sampling for topology optimization. The optimized MAS is evaluated on a held-out test set over three runs, with temperature set at 0.7 and maximum output tokens at 4096."
+}
+{
+    "name": "Flow: Modularized Agentic Workflow Automation",
+    "predecessor_work": "LLM-based Task Decision-Making Recent developments in LLM-based task decision making have focused on improving the reasoning and planning abilities of agents [27, 20, 30, 26, 15, 18, 1]. Previous approaches like ReAct [27] iteratively generate thoughts and actions based on current observations until task completion. This framework integrates action-taking with reasoning, allowing agents to perform complex tasks in dynamic environments. Reflexion [18] further improves this by incorporating self-reflection, where the agent evaluates and adjusts its reasoning during execution. ADAPT [15] introduces recursive task decomposition, enabling LLM-based agents to break tasks into smaller subtasks, which leads to improved task execution flexibility. However, these approaches often overlook dynamic task reallocation, particularly in multi-agent settings, which is where our work extends the current research.\n\nLLM-based Multi-Agent Frameworks Multi-agent frameworks have long been employed for task execution in distributed environments, with recent advances leveraging LLM to enhance coordination and decision-making [8, 10, 26, 9]. However, existing frameworks often rely on static workflows with limited adaptability to changes in the task environment. DyLAN [12] and MACNET [16] utilize static graphs to represent workflows in multi-agent frameworks; GPTSwarm [32] enhances agent interactions but maintains a fixed agent topology; DataInterpreter [7] updates workflows primarily in response to execution failures in subtasks, adjusting subsequent tasks while leaving completed tasks unchanged; AFlow [29] introduces a dynamic workflow generation framework based on Monte Carlo Tree Search, enabling adaptive adjustments through iterative code modification. This highlights the need for dynamic workflow updates.",
+    "objective": "To enhance multi-agent frameworks powered by LLMs by introducing modularity and dynamic workflow updating, allowing efficient concurrent execution of subtasks, effective goal achievement, and enhanced error tolerance.",
+    "motivation": "The need for effective adjustment of agentic workflows during task execution, particularly in real-world scenarios where plans must adapt to unforeseen challenges and changing conditions to ensure efficient execution of complex tasks.",
+    "workflow": "The approach involves formulating the workflow as an Activity-on-Vertex (AOV) graph, where vertices represent subtasks and edges denote dependencies. The workflow begins with an initial generation of candidate AOV graphs, evaluated for parallelism and dependency complexity, to select the optimal one. Execution plans are generated by performing topological sorting on the dependency graph, allowing concurrent execution of independent subtasks. During task execution, the workflow is continuously monitored and dynamically updated based on performance data to ensure efficiency and adaptability. This involves generating candidate updated workflows and selecting the best one based on predefined metrics. Modifications to subtask allocations, including addition, deletion, or reassignment, are made without affecting other agents or subtasks. The process iteratively refines the workflow until task completion.",
+    "experimental_design": "The experiments involve comparing the proposed Flow framework to existing multi-agent frameworks (AutoGen, CAMEL, MetaGPT) across three tasks: website design, LaTeX Beamer writing, and gobang game development. The tasks are chosen for their relevance to coding and writing tasks, which are common in multi-agent frameworks. Success Rate and Human Rating metrics are used for evaluation. Experiments use agents powered by GPT-4o-mini and GPT-3.5-Turbo models. The experimental design includes diverse scenarios to evaluate collaboration frameworks, with a focus on modular design, task parallelism, and the frameworks' ability to handle complex tasks efficiently."
+}
+
+{
+    "name": "EvoFlow: Evolving Diverse Agentic Workflows On The Fly",
+    "predecessor_work": "LLM-based Autonomous Agents Building on the success of single agent (Shen et al., 2024; Zhu et al., 2024b; Zhong et al., 2024), studies have shown that interaction among multiple LLM-based agents can substantially enhance individual model capabilities (Wang et al., 2024), as seen in several early frameworks, including CAMEL (Li et al., 2023), AutoGen (Wu et al., 2023), BabyAGI (Nakajima, 2023), and LLM-Debate (Du et al., 2023). However, these initial approaches heavily depended on manually crafted designs, which constrained the adaptability and flexibility of agents in addressing unforeseen challenges (He et al., 2023; Chen et al., 2023d). Consequently, the push toward automating agentic workflows has gained momentum. Automated Agentic Workflows Efforts to automate agentic workflows can be broadly categorized into the following types: (1) Prompt Optimization, exemplified by PromptBreeder (Fernando et al., 2023) and DsPy (Khattab et al., 2023); (2) Inter-agent Topology, which focuses on orchestrating interactions among agents, such as GPTSwarm (Zhuge et al., 2024), DyLAN (Liu et al., 2023), EvoMAC (Hu et al., 2024c), and G-Designer (Zhang et al., 2024b); (3) Agent Persona/Profile, represented by AgentVerse (Chen et al., 2023d) and EvoAgent (Yuan et al., 2024). More recently, Hu et al. (2024b) formalized the concept of Automated Design of Agentic Systems, with subsequent advancements by AgentSquare (Shang et al., 2024) and AFlow (Zhang et al., 2024c). However, these automation pipelines are predominantly homogeneous, i.e., utilizing a single-source LLM, and lack the integration of heterogeneous LLM agents of varying sizes and sources. Additionally, they typically produce a fixed workflow (Yuan et al., 2024; Zhuge et al., 2024; Zhang et al., 2024c), which cannot dynamically allocate resources when confronted with tasks/queries of different levels and complexities.",
+    "objective": "To automatically search for a population of heterogeneous and complexity-adaptive agentic workflows, optimizing for both cost and performance, and generating a Pareto-optimal set of workflows.",
+    "motivation": "The existing agentic automation pipelines often lack diversity in LLM heterogeneity and complexity scheduling, which limits their potential. EvoFlow is proposed to address these limitations by allowing for the combination of weaker models for more customized and cost-effective solutions, thereby overcoming the constraints of single-objective optimization and homogeneous workflows.",
+    "workflow": "EvoFlow initializes a diverse set of workflows with various complexities and specializations. Upon receiving a query, it retrieves relevant parent workflows based on tag-based similarity and generates offspring through crossover and mutation. The offspring are evaluated in a multi-objective space concerning performance and cost, and a niching-based selection process is employed to maintain diversity and efficiency in the workflow population. New workflows are continuously generated and optimized based on environmental feedback and query demands, forming a Pareto front of workflow solutions.",
+    "experimental_design": "The experiments were conducted on six benchmarks covering math reasoning, code generation, and embodied tasks. The method was compared against both handcrafted and automated baselines, with performance measured in terms of accuracy, pass rates, and success ratios. The LLM backbones used included both closed-source and open-source models. The results demonstrated that EvoFlow outperformed existing workflows in terms of accuracy and cost-effectiveness, with significantly lower training and inference costs."
+}
+{
+    "name": "Towards an AI co-scientist",
+    "predecessor_work": "The modern revolution in foundation AI models and large language models (LLMs) has been largely driven by advances in pre-training techniques, leading to breakthroughs in models like the GPT and Gemini family. Recent advancements, particularly the development of large deep learning and generative models, have cemented AI’s role in scientific discovery. This is best exemplified by AlphaFold 2’s remarkable progress in protein structure prediction. Building on these successes with specialized, bespoke AI models, there has been recent work exploring the even more ambitious goal of fully integrating AI, especially modern LLM-based systems, into the complete research workflow. Liang et al. assessed the utility of LLMs for providing feedback on research manuscripts, PaperQA2 surpassed PhD and postdoc researchers on multiple literature research tasks. HypoGeniC tackled hypothesis generation by iteratively refining hypotheses using LLMs. Virtual Lab proposed a team of LLM agents to design nanobody binders. Boiko et al. introduced “Coscientist”, a multi-agent system for autonomous execution of complex chemical experiments. Lu et al. proposed “The AI Scientist”, a fully automated system for conducting research using multiple collaborating LLM agents.",
+    "objective": "The goal of the AI co-scientist is to assist scientists in generating novel hypotheses and research proposals, thus accelerating the scientific discovery process. It aims to enhance the quality of hypothesis generation and experimental planning by leveraging AI to uncover new, original knowledge that aligns with research objectives provided by scientists.",
+    "motivation": "The motivation for developing an AI co-scientist stems from the challenges faced by researchers in mastering both deep subject-specific expertise and broad interdisciplinary knowledge. The complexity of scientific discovery processes necessitates tools that can bridge this gap and support scientists in navigating the vast amount of available information. The AI co-scientist is designed to facilitate hypothesis generation and exploration by mirroring the scientific method, thereby enabling researchers to focus on creative and innovative aspects of science.",
+    "workflow": "The AI co-scientist employs a multi-agent architecture with specialized agents (Generation, Reflection, Ranking, Evolution, Proximity, and Meta-review) that operate within an asynchronous task execution framework. The process begins with the Generation agent creating initial hypotheses based on a research goal. These hypotheses are reviewed by the Reflection agent for quality and novelty. The Ranking agent conducts a tournament-style evaluation to prioritize hypotheses. The Evolution agent iteratively refines hypotheses, while the Proximity agent organizes them into clusters. The Meta-review agent synthesizes insights and feedback to enhance future iterations. This system is designed for expert-in-the-loop collaboration, allowing scientists to guide and refine outputs through natural language interaction.",
+    "experimental_design": "The experimental design involves automated evaluations and expert reviews to validate the system's outputs. The AI co-scientist's performance is benchmarked using the GPQA dataset and other expert-curated research goals. End-to-end wet-lab validations are conducted in biomedicine applications such as drug repurposing, novel target discovery, and antimicrobial resistance. These validations assess the system's ability to propose novel hypotheses that are experimentally testable and scientifically relevant. The system's outputs are also evaluated for safety and adherence to ethical principles through adversarial testing."
+}

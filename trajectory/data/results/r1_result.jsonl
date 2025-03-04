@@ -1,0 +1,251 @@
+{
+    "TrajectoryDesign": {
+        "name": "Multi-Agent Design: Optimizing Agents with Better Prompts and Topologies",
+        "predecessor_work": [
+            "DSPy (automates exemplar design for prompts)",
+            "Li et al. (scaling agents via majority voting)",
+            "ADAS (LLM-based meta-agent for topology generation)",
+            "AFlow (Monte Carlo Tree Search for predefined operators)",
+            "Self-Consistency (SC) and Self-Refine (single-agent optimization)",
+            "Multi-Agent Debate (truthful predictions via agent interactions)"
+        ],
+        "objective": "Automate the design of high-performing multi-agent systems (MAS) by jointly optimizing prompts and topologies, overcoming manual trial-and-error approaches and improving performance across reasoning, long-context understanding, and coding tasks.",
+        "motivation": "Existing MAS designs suffer from prompt sensitivity, combinatorial complexity in topology search, and under-explored prompt-topology interplay. Manual optimization is inefficient, and prior automated methods focus narrowly on prompts **or** topologies, not both.",
+        
+        "block_level_prompt_optimization": [
+            {
+                "local_prompt_warmup": "Optimize prompts for individual agent blocks (e.g., Reflect, Aggregate) using MIPRO, a Bayesian prompt optimizer.",
+                "influence_calculation": "Measure incremental influence (I_ai) of each topology block by comparing performance against a base agent (a0).",
+                "demonstration_bootstrapping": "Generate few-shot examples from the model’s correct predictions on validation data.",
+                "instruction_candidate_diversification": "Propose diverse instruction variants using dataset summaries and hints."
+            }
+        ],
+        "workflow_topology_optimization": [
+            {
+                "search_space_pruning": "Prune non-influential topologies using softmax-weighted probabilities (p_a) derived from I_ai scores.",
+                "rejection_sampling": "Discard invalid configurations (e.g., exceeding token budgets) and enforce predefined workflow sequences.",
+                "topology_evaluation": "Validate sampled topologies on a subset of the validation set to stabilize performance estimates.",
+                "best_topology_selection": "Select the highest-performing topology via argmax over validation scores."
+            }
+        ],
+        "workflow_level_prompt_optimization": [
+            {
+                "global_prompt_adaptation": "Re-optimize prompts for the entire MAS to account for interdependencies between agents.",
+                "error_log_feedback": "Incorporate textual gradients from failed predictions to refine instructions and demonstrations.",
+                "token_efficiency_analysis": "Ensure prompt adjustments do not inflate token usage while maintaining accuracy gains."
+            }
+        ]
+    }
+}
+{
+    "TrajectoryDesign":{
+        "name": "Towards an AI co-scientist",
+        "predecessor_work": [
+            "AlphaGo (Monte Carlo Tree Search for game state exploration)",
+            "Libratus (poker AI using similar techniques)",
+            "AlphaFold 2 (protein structure prediction)",
+            "TxGNN (biomedical foundation model for drug repurposing)",
+            "Coscientist (GPT-4 based chemical experiment system)",
+            "Virtual Lab (LLM agents for nanobody design)",
+            "Med-PaLM 2 (biomedical LLM)",
+            "HypoGeniC (hypothesis generation via multi-armed bandit approach)"
+        ],
+        "objective": "To develop an AI co-scientist system that augments scientific discovery through automated hypothesis generation, iterative refinement via scientific debate mechanisms, and experimental validation integration, specifically targeting complex biomedical challenges like drug repurposing and antimicrobial resistance.",
+        "motivation": "Addressing the 'breadth vs. depth' dilemma in modern biomedical research where: (1) Exponential growth of publications overwhelms human researchers, (2) Transdisciplinary insights require connecting disparate knowledge domains, (3) High costs/risks of experimental validation demand better hypothesis prioritization.",
+        "workflow_architecture": {
+            "Research_Goal_Configuration": [{
+                "Natural_Language_Parsing": "Convert scientist's free-form research goal into structured constraints",
+                "Constraint_Mapping": "Extract key attributes (novelty, safety, testability) using Gemini 2.0's multimodal capabilities",
+                "Plan_Synthesis": "Generate research configuration file defining evaluation metrics and resource allocation"
+            }],
+            "Hypothesis_Lifecycle": [{
+                "Generation_Phase": [
+                    "Literature exploration via web search/API integrations",
+                    "Simulated expert debates through self-play mechanisms",
+                    "Assumption tree construction with conditional reasoning"
+                ],
+                "Tournament_Phase": [
+                    "Elo-based pairwise hypothesis comparisons",
+                    "Reflection agent's multi-modal reviews (correctness/novelty/safety)",
+                    "Proximity graph clustering for idea deduplication"
+                ],
+                "Evolution_Phase": [
+                    "Synthetic recombination of top-ranked hypotheses",
+                    "Simplification for experimental feasibility",
+                    "Out-of-box thinking via constrained divergence prompts"
+                ]
+            }],
+            "Validation_Integration": [{
+                "In_Silico_Validation": [
+                    "GPQA benchmark alignment checks",
+                    "DepMap score integration for drug target prioritization",
+                    "AlphaFold-assisted protein interaction modeling"
+                ],
+                "Wet-Lab_Interface": [
+                    "IC50 assay protocol generation for AML validation",
+                    "Automated NIH grant-style specific aims formatting",
+                    "Human hepatic organoid experiment planning"
+                ]
+            }],
+            "Self_Improvement_Loop": [{
+                "Meta_Review_Mechanism": [
+                    "Tournament pattern analysis",
+                    "Agent prompt optimization via context memory",
+                    "Safety constraint reinforcement learning"
+                ],
+                "Compute_Scaling": [
+                    "Asynchronous task prioritization",
+                    "Resource allocation based on hypothesis Elo scores",
+                    "Failure recovery through persistent state storage"
+                ]
+            }]
+        }
+    }
+}
+{
+    "TrajectoryDesign": {
+        "name": "EvoFlow: Evolving Diverse Agentic Workflows On The Fly",
+        "predecessor_work": [
+            "CAMEL", 
+            "AutoGen", 
+            "MetaGPT", 
+            "DsPy", 
+            "GPTSwarm", 
+            "EvoAgent", 
+            "ADAS", 
+            "AgentSquare", 
+            "AFlow"
+        ],
+        "objective": "To automatically evolve a population of heterogeneous, complexity-adaptive agentic workflows that balance performance and cost, addressing the limitations of homogeneous LLM usage and single-objective optimization in existing methods.",
+        "motivation": "Existing agentic workflows lack diversity in LLM heterogeneity and complexity scheduling, often relying on expensive homogeneous models and converging to overly complex solutions. EvoFlow aims to leverage complementary capabilities of diverse LLMs and adapt workflows to task difficulty, enabling cost-effective and high-performing solutions.",
+        
+        "Population_Initialization": [
+            {
+                "operator_selection": "Predefined operator nodes (e.g., CoT, Debate, Reflexion) are selected from a repository", 
+                "LLM_instantiation": "Operator nodes are instantiated with LLMs sampled from a pool (e.g., LLaMa-3.1, QWen-2.5)", 
+                "workflow_generation": "Random combinations of operators form initial workflows with varying topologies", 
+                "tag_assignment": "LLM-generated tags (e.g., task domain, complexity) are assigned to workflows for later retrieval"
+            }
+        ],
+        
+        "Workflow_Evolution": [
+            {
+                "query_processing": "Incoming queries trigger evolution cycles", 
+                "tag_based_retrieval": "Cosine similarity between query embeddings and workflow tags selects top-K parent workflows", 
+                "crossover": "LLM-guided merging of parent workflows to create offspring", 
+                "mutation": "Three mutation types applied: LLM replacement, prompt refinement, operator topology modification"
+            }
+        ],
+        
+        "Niching_Selection": [
+            {
+                "niching_area_identification": "Cluster workflows based on cost-performance similarity using Pareto dominance", 
+                "fitness_evaluation": "Calculate fitness via dominance-preserving indicators and environmental feedback", 
+                "population_update": "Replace worst-performing workflows in niching areas with mutated offspring"
+            }
+        ],
+        
+        "Inference_Deployment": [
+            {
+                "workflow_retrieval": "Select Pareto-optimal workflows from the population based on query complexity and domain", 
+                "dynamic_execution": "Simple workflows handle low-complexity tasks; complex workflows activate multi-agent debate/ensembling for hard queries", 
+                "experience_logging": "Update LLM and workflow performance history to guide future evolution"
+            }
+        ]
+    }
+}
+{
+    "TrajectoryDesign": {
+        "name": "Automated Hypothesis Validation with Agentic Sequential Falsifications",
+        "predecessor_work": [
+            "Majumder et al. (2024): Hypothesis generation grounded in datasets",
+            "Thompson & Skau (2023): Hypothesis formalization and scope analysis",
+            "Neyman & Pearson (1928): Classical statistical hypothesis testing framework",
+            "Fisher (1936): Design of experiments and p-value foundations",
+            "Vovk & Wang (2021): E-values for flexible evidence aggregation",
+            "Grunwald et al. (2020): Safe testing with anytime-valid e-processes",
+            "Wang et al. (2023): LLM-driven hypothesis generation limitations"
+        ],
+        "objective": "To develop an automated framework (Popper) that rigorously validates free-form natural language hypotheses at scale using LLM agents, while strictly controlling Type-I error rates (<α) and achieving high statistical power.",
+        "motivation": "The proliferation of hallucination-prone LLM-generated hypotheses creates validation bottlenecks. Manual validation is infeasible due to volume, while existing automated methods lack statistical rigor. Abstract hypotheses require translation to falsifiable sub-claims across diverse domains (biology, economics, etc.), necessitating a unified framework combining LLM reasoning with robust statistical testing.",
+        
+        "hypothesis_interpretation": [{
+            "hypothesis_parsing": "Decompose main hypothesis into variables (V), relationships (r), and context (c)",
+            "null_formalization": "Define H₀ as the negation of the hypothesis' core claim",
+            "implication_space": "Identify measurable implications of H₀ using domain knowledge"
+        }],
+        
+        "experiment_design": [{
+            "subhypothesis_generation": "LLM agent proposes falsifiable sub-hypotheses (hᵢ⁰) derived from H₀",
+            "relevance_check": "LLM-as-judge evaluates if hᵢ⁰ is logically implied by H₀ (R(h)≥r₀ threshold)",
+            "test_blueprint": "Design experiments to test hᵢ⁰ (data sources, statistical methods)",
+            "feasibility_verification": "Check metadata availability without accessing raw data"
+        }],
+        
+        "agentic_execution": [{
+            "data_retrieval": "Query static databases (GTEx, GWAS) or trigger new data collection",
+            "preprocessing": "Handle missing values, normalize data, subset relevant features",
+            "statistical_testing": "Automatically select tests (t-test, Fisher's exact, permutation) based on data distribution",
+            "pvalue_computation": "Calculate valid p-values under hᵢ⁰ assumptions"
+        }],
+        
+        "sequential_aggregation": [{
+            "evalue_calibration": "Convert p-values to e-values using p-to-e calibrator (κ×pᵏ⁻¹)",
+            "evidence_accumulation": "Multiply e-values across iterations (Eᵢ=Πeₛ)",
+            "stopping_rule": "Terminate when Eᵢ≥1/α (reject H₀) or reach max iterations",
+            "error_control": "Maintain Type-I error ≤α via e-process martingale properties"
+        }],
+        
+        "validation_decision": [{
+            "interpretation": "Map aggregated e-values to binary validation status (ŷ=1 if E≥1/α)",
+            "trajectory_analysis": "Visualize e-value progression and failed/abandoned tests",
+            "expert_alignment": "Compare agent decisions with human expert validations"
+        }]
+    }
+}
+{
+    "TrajectoryDesign":{
+        "name": "Flow: Modularized Agentic Workflow Automation",
+        "predecessor_work": [
+            "MetaGPT: A multi-agent framework for programming tasks using predefined roles and sequential workflows with Standardized Operating Procedures (SOPs).",
+            "CAMEL: A multi-agent system requiring user-defined agent pairs for sequential task execution across diverse scenarios.",
+            "AutoGen: A framework that auto-generates agent lists for sequential subtask execution but lacks dynamic parallelism management.",
+            "AFlow: A dynamic workflow generation framework using Monte Carlo Tree Search but limited to code modification-based adjustments."
+        ],
+        "objective": "To enhance multi-agent frameworks by enabling real-time dynamic workflow adjustments and promoting modular task decomposition, thereby improving efficiency, error tolerance, and adaptability in complex task execution.",
+        "motivation": "Existing LLM-based multi-agent frameworks rely on static workflows, leading to inefficiencies when encountering unexpected challenges. The lack of modularity and dynamic adaptability limits their robustness in real-world scenarios where tasks require continuous refinement.",
+        "workflow_architecture": {
+            "workflow_initialization": [
+                {
+                    "aov_graph_generation": "Generate multiple candidate Activity-on-Vertex (AOV) graphs using LLM, where vertices represent subtasks and edges denote dependencies.",
+                    "parallelism_evaluation": "Calculate average parallelism score \\(P_{\\text{avg}}\\) to prioritize workflows with maximal concurrent subtask execution.",
+                    "dependency_complexity_assessment": "Compute standard deviation of node degrees \\(C_{\\text{dependency}}\\) to minimize workflow bottlenecks.",
+                    "optimal_graph_selection": "Select the AOV graph with the highest parallelism and lowest dependency complexity."
+                }
+            ],
+            "execution_planning": [
+                {
+                    "topological_sorting": "Generate a linear subtask order adhering to dependencies while maximizing parallel execution steps.",
+                    "agent_allocation": "Assign agents to subtasks, cloning agents when role conflicts occur to maintain parallelism.",
+                    "subtask_parallel_execution": "Trigger eligible subtasks (with zero pending dependencies) concurrently using assigned agents."
+                }
+            ],
+            "dynamic_refinement": [
+                {
+                    "global_monitoring": "Continuously track subtask statuses, agent performance, and workflow progress via LLM-based inspector.",
+                    "failure_detection": "Identify subtask failures, bottlenecks, or unmet requirements through data validation.",
+                    "candidate_regeneration": "Generate updated AOV graphs incorporating real-time execution data and revised dependencies.",
+                    "adaptive_restructuring": "Select and deploy the optimal updated workflow, ensuring localized adjustments without disrupting unrelated modules.",
+                    "error_recovery": "Reassign failed subtasks, introduce bridging tasks, or bypass dependencies to maintain workflow integrity."
+                }
+            ],
+            "verification_and_output": [
+                {
+                    "subtask_validation": "Double-check completion status and output quality via LLM verification to prevent false positives.",
+                    "dependency_update": "Adjust parent completion counts for child tasks and propagate changes through the AOV graph.",
+                    "final_output_generation": "Aggregate validated subtask outputs into a cohesive result aligned with the original task goal."
+                }
+            ]
+        }
+    }
+}
